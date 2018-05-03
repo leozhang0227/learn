@@ -1,0 +1,12 @@
+mysql performance
+1. 使用查询缓存 query_cache_type=1;
+2. 查询缓存相关变量：show variables like '%query_cache%';
+3. 查看缓存相关状态：show status like '%Qcache%';
+4.优化提示：
+	如果Qcache_lowmem_prunes 值比较大，表示查询缓存区大小设置太小，需要增大。
+	如果Qcache_free_blocks 较多，表示内存碎片较多，需要清理，flush query cache
+	根据我看的 《High PerformanceMySQL》中所述，关于query_cache_min_res_unit大小的调优
+	，书中给出了一个计算公式，可以供调优设置参考：
+	query_cache_min_res_unit = (query_cache_size - Qcache_free_memory)/ Qcache_queries_in_cache
+
+
