@@ -1,5 +1,15 @@
 mysql performance
+
+https://www.cnblogs.com/zhouyusheng/p/8038224.html
+
 1. 使用查询缓存 query_cache_type=1;
+	如果不是ON，修改配置文件以开启查询缓存：
+	> vi /etc/my.cnf
+	[mysqld]中添加：
+	query_cache_size = 20M
+	query_cache_type = ON
+	重启mysql服务：
+	> service mysqld restart
 2. 查询缓存相关变量：show variables like '%query_cache%';
 3. 查看缓存相关状态：show status like '%Qcache%';
 4.优化提示：
@@ -8,5 +18,25 @@ mysql performance
 	根据我看的 《High PerformanceMySQL》中所述，关于query_cache_min_res_unit大小的调优
 	，书中给出了一个计算公式，可以供调优设置参考：
 	query_cache_min_res_unit = (query_cache_size - Qcache_free_memory)/ Qcache_queries_in_cache
+	
+5. EXPLAIN 你的 SELECT 查询
+6. 当只要一行数据时使用 LIMIT 1
+7. 正确使用索引：https://blog.csdn.net/u013927110/article/details/46636765
+	四.如何查看索引使用的情况:
+	show status like‘Handler_read%’;
+	注意： 
+	handler_read_key:这个值越高越好，越高表示使用索引查询到的次数。
+	handler_read_rnd_next:这个值越高，说明查询低效。
+8.查看mysql语句运行时间：方法一： show profiles。https://www.cnblogs.com/happySmily/p/5943311.html
+
+9.在Join表的时候使用相当类型的例，并将其索引。
+	join 用法：
+	https://www.cnblogs.com/fudashi/p/7491039.html
+	http://www.cnblogs.com/fudashi/p/7506877.html
+	http://www.cnblogs.com/fudashi/p/7508272.html
+	http://www.cnblogs.com/fudashi/p/7521915.html
+	http://www.cnblogs.com/fudashi/p/7541991.html
+l的exists与inner join 和 not exists与 left join 性能差别惊人：http://openxtiger.iteye.com/blog/1911228
+
 
 
